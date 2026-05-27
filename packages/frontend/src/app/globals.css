@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --border: #e2e8f0;
+    --ring: #3b82f6;
+    --radius: 0.875rem;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-slate-900 antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    overscroll-behavior: none;
+  }
+
+  /* Large touch targets for mobile */
+  button, a, input, select, textarea {
+    @apply outline-none;
+  }
+
+  button:focus-visible, a:focus-visible, input:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+}
+
+@layer components {
+  /* Mobile-optimized card */
+  .card-touch {
+    @apply bg-white rounded-touch p-4 shadow-sm border border-slate-100 active:scale-[0.98] transition-transform;
+  }
+
+  /* Large touch-friendly button */
+  .btn-touch {
+    @apply inline-flex items-center justify-center min-h-touch-lg px-6 py-3 
+           rounded-touch font-semibold text-base-touch transition-all duration-200
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+           select-none cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn-touch bg-primary-600 text-white hover:bg-primary-700 shadow-sm shadow-primary-200;
+  }
+
+  .btn-secondary {
+    @apply btn-touch bg-slate-100 text-slate-700 hover:bg-slate-200;
+  }
+
+  .btn-success {
+    @apply btn-touch bg-emerald-500 text-white hover:bg-emerald-600;
+  }
+
+  .btn-danger {
+    @apply btn-touch bg-red-500 text-white hover:bg-red-600;
+  }
+
+  .btn-ghost {
+    @apply btn-touch bg-transparent text-slate-600 hover:bg-slate-100;
+  }
+
+  .btn-outline {
+    @apply btn-touch bg-transparent border-2 border-primary-500 text-primary-600 hover:bg-primary-50;
+  }
+
+  /* Input fields */
+  .input-touch {
+    @apply w-full min-h-touch-xl px-4 py-3 rounded-touch border border-slate-200
+           bg-white text-base-touch placeholder:text-slate-400
+           focus:border-primary-500 focus:ring-2 focus:ring-primary-100
+           transition-all duration-200;
+  }
+
+  /* Chip/badge */
+  .chip {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .chip-pending { @apply chip bg-amber-100 text-amber-700; }
+  .chip-paid { @apply chip bg-emerald-100 text-emerald-700; }
+  .chip-cancelled { @apply chip bg-red-100 text-red-700; }
+  .chip-credit { @apply chip bg-indigo-100 text-indigo-700; }
+  .chip-debit { @apply chip bg-emerald-100 text-emerald-700; }
+
+  /* Sheet / Bottom sheet for mobile */
+  .sheet {
+    @apply fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl
+           animate-slide-up max-h-[85vh] overflow-y-auto;
+  }
+
+  .sheet-overlay {
+    @apply fixed inset-0 z-40 bg-black/40 backdrop-blur-sm animate-fade-in;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-pulse bg-slate-200 rounded-touch;
+  }
+
+  /* Empty state */
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-16 px-6 text-center;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+}

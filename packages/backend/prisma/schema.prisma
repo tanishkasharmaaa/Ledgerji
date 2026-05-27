@@ -1,0 +1,136 @@
+// Prisma Schema - LedgerJi
+// Super simple business money tracking for local Indian businesses
+// Database: PostgreSQL (Neon free tier)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// USER - Shop owner account (simplified)
+// ============================================================
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  phone         String?
+  passwordHash  String?
+  googleId      String?   @unique
+  avatarUrl     String?
+  businessName  String?
+  upiId         String?   // Their UPI ID for receiving payments
+  isVerified    Boolean   @default(false)
+  refreshToken  String?
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customers     Customer[]
+  transactions  Transaction[]
+  reminders     Reminder[]
+
+  @@index([email])
+  @@index([phone])
+  @@map("users")
+}
+
+// ============================================================
+// CUSTOMER - A customer/client of the shop owner
+// ============================================================
+model Customer {
+  id            String    @id @default(uuid())
+  userId        String
+  name          String
+  phone         String?
+  whatsappPhone String?   // WhatsApp number (may differ from phone)
+  email         String?
+  address       String?
+  notes         String?
+  totalCredit   Float     @default(0) // Total money given (udhaar)
+  totalDebit    Float     @default(0) // Total money received
+  balance       Float     @default(0) // Net balance (positive = they owe)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+  reminders     Reminder[]
+
+  @@index([userId])
+  @@index([userId, phone])
+  @@index([userId, name])
+  @@map("customers")
+}
+
+// ============================================================
+// TRANSACTION - Credit/Debit entry (simplified "entry")
+// ============================================================
+model Transaction {
+  id            String    @id @default(uuid())
+  userId        String
+  customerId    String
+  type          String    // "CREDIT" (money given/they owe) or "DEBIT" (money received/they paid)
+  amount        Float
+  description   String?
+  notes         String?
+  dueDate       DateTime? // When payment is expected
+  status        String    @default("PENDING") // PENDING, PAID, CANCELLED
+  paidAt        DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer      Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  reminders     Reminder[]
+
+  @@index([userId])
+  @@index([customerId])
+  @@index([userId, customerId])
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@index([userId, type, status])
+  @@map("transactions")
+}
+
+// ============================================================
+// REMINDER - Payment reminder sent to customer
+// ============================================================
+model Reminder {
+  id              String      @id @default(uuid())
+  userId          String
+  customerId      String
+  transactionId   String?
+  method          String      @default("WHATSAPP") // WHATSAPP, SMS, MANUAL
+  template        String?     // Which message template was used
+  message         String?     // Actual message sent
+  whatsappNumber  String?     // Recipient WhatsApp number
+  status          String      @default("SENT") // SENT, DELIVERED, READ, FAILED
+  upiLink         String?     // UPI payment link included
+  qrGenerated     Boolean     @default(false)
+  sentAt          DateTime    @default(now())
+  createdAt       DateTime    @default(now())
+
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer        Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  transaction     Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([customerId])
+  @@index([userId, sentAt])
+  @@index([userId, status])
+  @@map("reminders")
+}
+
+// ============================================================
+// ENUM: Used only at application level via string constants
+// ============================================================
+// TransactionType: CREDIT | DEBIT
+// TransactionStatus: PENDING | PAID | CANCELLED
+// ReminderMethod: WHATSAPP | SMS | MANUAL
+// ReminderStatus: SENT | DELIVERED | READ | FAILED

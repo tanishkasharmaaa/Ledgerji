@@ -1,0 +1,95 @@
+{
+  "name": "LedgerJi - Simple Business Bookkeeping",
+  "short_name": "LedgerJi",
+  "description": "The simplest way to track business money. Send WhatsApp reminders, generate UPI QR codes, and manage customers – all from your phone.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "scope": "/",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard with business overview"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Transaction",
+      "short_name": "Add Entry",
+      "description": "Record money given or received",
+      "url": "/transactions/new",
+      "icons": [{ "src": "/icons/add-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Customers",
+      "short_name": "Customers",
+      "description": "View all your customers",
+      "url": "/customers",
+      "icons": [{ "src": "/icons/customers-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}
