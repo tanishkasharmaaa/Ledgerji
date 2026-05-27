@@ -22,13 +22,39 @@ import { notFoundHandler } from './middleware/notFound.middleware';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ----- Trust Proxy (Crucial for Render Deployment) -----
+// Render uses a reverse proxy. Without this, express-rate-limit will treat 
+// ALL incoming traffic as originating from the same proxy IP, blocking legitimate users.
+app.set('trust proxy', 1);
+
 // ----- Security Middleware -----
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+
+// Dynamically handle multiple origins (Dev + Production Vercel URL)
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173', // Common Vite port if needed
+  'https://ledgerji-frontend.vercel.app'
+];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS Error: Origin ${origin} not allowed by configurations.`));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
 }));
 
 // ----- Rate Limiting -----
@@ -39,7 +65,12 @@ const limiter = rateLimit({
   legacyHeaders: false,
   message: { success: false, message: 'Too many requests, please try again later.' },
 });
-app.use(limiter);
+
+// Skip rate limiting for the local health check endpoint
+app.use((req, res, next) => {
+  if (req.path === '/api/health') return next();
+  limiter(req, res, next);
+});
 
 // ----- Body Parsing -----
 app.use(express.json({ limit: '10mb' }));
@@ -56,8 +87,6 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/public', publicRouter);
 
 // Authenticated routes
-// Note: authLimiter is applied only to sensitive routes (login/register/google)
-// inside auth.routes.ts — not globally, so GET /me and POST /refresh are not throttled
 app.use('/api/auth', authRouter);
 app.use('/api/customers', customerRouter);
 app.use('/api/transactions', transactionRouter);
@@ -71,8 +100,8 @@ app.use(errorHandler);
 
 // ----- Start Server -----
 app.listen(PORT, () => {
-  console.log(`🚀 LedgerJi API running on http://localhost:${PORT}`);
-  console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🚀 LedgerJi API running on port ${PORT}`);
+  console.log(`📋 Health check available at /api/health`);
 });
 
 export default app;
