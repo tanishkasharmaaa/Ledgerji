@@ -70,7 +70,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard" className="flex items-center gap-2.5 active:opacity-90 transition-opacity">
               <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
                 <Image 
-                  src="/ledgerji-var1.svg" 
+                  src="/ledgerji-var1.svg"
                   alt="LedgerJi Logo"
                   width={30}
                   height={30}

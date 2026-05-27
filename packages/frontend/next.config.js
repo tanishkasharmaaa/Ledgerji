@@ -4,6 +4,10 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   disable: process.env.NODE_ENV === "development", // Keeps development fast
   register: true,
   skipWaiting: true,
+  // When disabled (dev), unregister any existing SW so stale caches don't interfere
+  selfDestroying: true,
+  // Automatically purge outdated precache entries from previous builds
+  cleanupOutdatedCaches: true,
 });
 
 /** @type {import('next').NextConfig} */

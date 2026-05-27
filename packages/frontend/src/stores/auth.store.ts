@@ -1,6 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import api from '@/lib/api';
+import api, { setTokenGetter } from '@/lib/api';
+
+// Register the token getter so the API layer can attach Bearer headers at runtime.
+// Uses getState() to avoid circular import issues — the store is fully created by now.
+setTokenGetter(() => useAuthStore.getState().accessToken);
 
 interface User {
   id: string;

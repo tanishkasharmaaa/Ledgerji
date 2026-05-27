@@ -29,12 +29,18 @@ router.post('/register', authLimiter, validate(registerSchema), asyncHandler(asy
   console.log(result)
 
   res.cookie('accessToken', result.accessToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 15 * 60 * 1000, path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 15 * 60 * 1000,
+    path: '/',
   });
   res.cookie('refreshToken', result.refreshToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api/auth',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/api/auth',
   });
 
   res.status(201).json({ success: true, user: result.user, accessToken: result.accessToken });
@@ -45,12 +51,18 @@ router.post('/login', authLimiter, validate(loginSchema), asyncHandler(async (re
   const result = await AuthService.login(req.body);
 
   res.cookie('accessToken', result.accessToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 15 * 60 * 1000, path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 15 * 60 * 1000,
+    path: '/',
   });
   res.cookie('refreshToken', result.refreshToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api/auth',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/api/auth',
   });
 
   res.json({ success: true, user: result.user, accessToken: result.accessToken });
@@ -66,12 +78,18 @@ router.post('/google', authLimiter, asyncHandler(async (req: Request, res: Respo
   const result = await AuthService.googleAuth({ googleId, name, email, avatarUrl });
 
   res.cookie('accessToken', result.accessToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 15 * 60 * 1000, path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 15 * 60 * 1000,
+    path: '/',
   });
   res.cookie('refreshToken', result.refreshToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api/auth',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/api/auth',
   });
 
   res.json({ success: true, user: result.user, accessToken: result.accessToken });
@@ -85,12 +103,18 @@ router.post('/refresh', asyncHandler(async (req: Request, res: Response) => {
   const result = await AuthService.refreshTokens(token);
 
   res.cookie('accessToken', result.accessToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 15 * 60 * 1000, path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 15 * 60 * 1000,
+    path: '/',
   });
   res.cookie('refreshToken', result.refreshToken, {
-    httpOnly: true, secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000, path: '/api/auth',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/api/auth',
   });
 
   res.json({ success: true, accessToken: result.accessToken });
