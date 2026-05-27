@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Users, ArrowRightLeft, Bell, Settings,
   LogOut, Menu, X, IndianRupee,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 const NAV_ITEMS = [
@@ -24,12 +24,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, logout, isAuthenticated, isInitialized } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Move programmatic layout routing shifts into an isolated side-effect.
+  // This preserves structural chunk assignment states across runtime rehydration.
+  useEffect(() => {
+    if (isInitialized && !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isInitialized, isAuthenticated, router]);
+
   const handleLogout = async () => {
     await logout();
     router.push('/login');
   };
 
-  // ---- Auth Guard ----
+  // Render a clean fallback viewport shell during core state hydration checks
   if (!isInitialized) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 gap-4">
@@ -39,8 +47,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // If initialization has finished but user is unauthenticated, 
+  // safely prevent content leak while letting layout shell finalize mounting cleanly
   if (!isAuthenticated) {
-    router.replace('/login');
     return null;
   }
 
@@ -59,8 +68,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </button>
             
             <Link href="/dashboard" className="flex items-center gap-2.5 active:opacity-90 transition-opacity">
-              {/* Perfect, bounded square wrapper for top-bar alignment */}
-              <div className="w-8 h-8 flex items-center justify-center  overflow-hidden ">
+              <div className="w-8 h-8 flex items-center justify-center overflow-hidden">
                 <Image 
                   src="/ledgerji-var1.svg" 
                   alt="LedgerJi Logo"
@@ -70,7 +78,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   priority
                 />
               </div>
-              <span className=" ml-0.2 font-bold text-lg text-slate-900 tracking-tight">LedgerJi</span>
+              <span className="ml-0.2 font-bold text-lg text-slate-900 tracking-tight">LedgerJi</span>
             </Link>
           </div>
 
