@@ -76,20 +76,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }),
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(
-                    function(registration) { console.log('SW registered:', registration.scope); },
-                    function(err) { console.log('SW registration failed:', err); }
-                  );
-                });
-              }
-            `,
-          }}
-        />
+        {/* SW registration — only in production; inline script is NOT needed in dev
+            because @ducanh2912/next-pwa injects its own registration normally.
+            However, if you need a manual fallback for production, keep it guarded. */}
+        {process.env.NODE_ENV === 'production' && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                if ('serviceWorker' in navigator) {
+                  window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js').then(
+                      function(registration) { console.log('SW registered:', registration.scope); },
+                      function(err) { console.log('SW registration failed:', err); }
+                    );
+                  });
+                }
+              `,
+            }}
+          />
+        )}
       </head>
       <body className="min-h-screen bg-surface-secondary" suppressHydrationWarning>
         <Providers>

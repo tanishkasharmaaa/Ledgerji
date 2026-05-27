@@ -43,5 +43,10 @@ packages/backend/.env
 # Coverage
 coverage/
 
+# PWA — generated service-worker files (produced by next-pwa at build time)
+packages/frontend/public/sw.js
+packages/frontend/public/workbox-*.js
+packages/frontend/public/worker-*.js
+
 # Uploads (optional)
 uploads/
