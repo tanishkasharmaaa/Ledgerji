@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["ES2022"],
+    "rootDir": "./src",              // 👈 Add this to force src as the root
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
@@ -17,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "prisma/seed.ts"],
+  "include": ["src/**/*"],           // 👈 Remove prisma/seed.ts from here
   "exclude": ["node_modules", "dist"]
 }
