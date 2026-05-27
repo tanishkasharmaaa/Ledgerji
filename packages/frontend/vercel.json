@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "buildCommand": "cd ../.. && npx turbo run build --filter=@ledgerji/frontend",
+  "installCommand": "cd ../.. && npm install",
+  "outputDirectory": "../../packages/frontend/.next",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://api.ledgerji.com",
+    "NEXT_PUBLIC_APP_URL": "https://ledgerji.com"
+  }
+}
