@@ -57,11 +57,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/ledgerji-logo.svg', type: 'image/svg+xml' },                         // Browser tab
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },               // Android App Drawer Icon
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },               // Splash / Loading Screen Icon
+      { url: '/ledgerji-192.png', sizes: '192x192', type: 'image/png' },               // Android App Drawer Icon
+      { url: '/ledgerji-512.png', sizes: '512x512', type: 'image/png' },               // Splash / Loading Screen Icon
     ],
     apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },             // iOS Home Screen icon
+      { url: '/ledgerji-logo.png', sizes: '180x180', type: 'image/png' },             // iOS Home Screen icon
     ],
   },
 };
