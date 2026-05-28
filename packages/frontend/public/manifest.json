@@ -52,14 +52,14 @@
       "short_name": "Add Entry",
       "description": "Record money given or received",
       "url": "/transactions/new",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/ledgerji-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Customers",
       "short_name": "Customers",
       "description": "View all your customers",
       "url": "/customers",
-      "icons": [{ "src": "/ledgerji-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/ledgerji-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }

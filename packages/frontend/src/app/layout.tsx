@@ -53,15 +53,15 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 } },
   manifest: '/manifest.json',
   
-  // ---- FIXED PWA APP ICONS ----
+  // ---- FULLY SYNCHRONIZED PWA APP ICONS ----
   icons: {
     icon: [
-      { url: '/ledgerji-logo.svg', type: 'image/svg+xml' },                         // Browser tab
-      { url: '/ledgerji-192.png', sizes: '192x192', type: 'image/png' },               // Android App Drawer Icon
-      { url: '/ledgerji-512.png', sizes: '512x512', type: 'image/png' },               // Splash / Loading Screen Icon
+      { url: '/ledgerji-logo.svg', type: 'image/svg+xml' },                         // Browser tab favicon
+      { url: '/ledgerji-192.png', sizes: '192x192', type: 'image/png' },           // Android App Drawer Icon
+      { url: '/ledgerji-512.png', sizes: '512x512', type: 'image/png' },           // Splash Screen Loading Icon
     ],
     apple: [
-      { url: '/ledgerji-logo.png', sizes: '180x180', type: 'image/png' },             // iOS Home Screen icon
+      { url: '/ledgerji-192.png', sizes: '180x180', type: 'image/png' },           // iOS Home Screen Icon (Auto-scaled by Apple)
     ],
   },
 };
